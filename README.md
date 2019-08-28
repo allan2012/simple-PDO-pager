@@ -1,19 +1,25 @@
-# basic-package
+# Simple PDO Pagination Package
 
-Just a simple way to get started with a basic well tested PHP package management. 
-You can use it as a basic template to create a standard composer PHP package.
-
+This is a simple PHP package that lets you paginate your select queries 
+making it easier to navigate a list of records with simple navigation links.
 ### Composer Installation
 
-```composer require allan/calc```
+```composer require allan/pagination```
 
 ### Usage
 ```
 <?php
 
-use Calc\Calculator;
+use Pagination\Pager;
 
-$c = new Calculator;
-$sum = $c->add(3445,6677);
-var_dump($sum);
+$p = new \PDO("mysql:host=localhost;port=3306;dbname=labstore", 'root', '');
+$p = new Pager(self::$pdoConnection, "SELECT * FROM inventory");
+$p->setPageUrl("http://localhost/inventory");
+$p->setPerPage(10);
+$p->paginate();
+```
+
+for JSON
+```
+$p->paginateJSON();
 ```
