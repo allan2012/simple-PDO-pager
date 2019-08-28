@@ -12,8 +12,8 @@ making it easier to navigate a list of records with simple navigation links.
 
 use Pagination\Pager;
 
-$p = new \PDO("mysql:host=localhost;port=3306;dbname=labstore", 'root', '');
-$p = new Pager(self::$pdoConnection, "SELECT * FROM inventory");
+$pdo = new \PDO("mysql:host=localhost;port=3306;dbname=labstore", 'root', '');
+$p = new Pager($pdo, "SELECT * FROM inventory");
 $p->setPageUrl("http://localhost/inventory");
 $p->setPerPage(10);
 $p->paginate();
