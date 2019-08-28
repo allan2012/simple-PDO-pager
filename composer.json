@@ -1,0 +1,19 @@
+{
+    "name": "allan/pagination",
+    "description": "A simple PHP PDO pagination package",
+    "license": "MIT",
+    "require-dev": {
+        "phpunit/phpunit": "^7"
+    },
+    "authors": [
+        {
+            "name": "Allan Kibet",
+            "email": "allan.koskei@gmail.com"
+        }
+    ],
+    "autoload": {
+        "classmap": [
+             "src/Pagination"
+         ]
+     }
+}
