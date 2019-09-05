@@ -2,55 +2,180 @@
 
 namespace Pagination;
 
-use \PDO;
-
 /**
- * @author Allan Kibet Koskeu <allan.koskei@gmail.com>
+ * 
+ * @author Allan Kibet Koskei <allan.koskei@gmail.com>
+ * 
  * @version 1.0.0
+ * 
  */
 class Pager
 {
 
+    /**
+     * 
+     * Items per page
+     *
+     * @var int
+     * 
+     */
     private $perPage;
 
+
+    /**
+     * 
+     * Total page count
+     *
+     * @var int
+     * 
+     */
     private $totalPageCount;
 
+
+    /**
+     * 
+     * Query to be paginated
+     *
+     * @var string
+     * 
+     */
     private $queryString;
 
+
+    /**
+     * 
+     * SQL Query offset
+     *
+     * @var int
+     * 
+     */
     private $offset;
 
+
+    /**
+     * 
+     * Current page number
+     *
+     * @var int
+     * 
+     */
     private $currentPage;
 
+
+    /**
+     * 
+     * First page link
+     *
+     * @var any
+     * 
+     */
     private $firstLink;
 
+
+    /**
+     * 
+     * Next page link
+     *
+     * @var any
+     * 
+     */
     private $nextLink;
 
+
+    /**
+     * 
+     * Final page link
+     *
+     * @var any
+     * 
+     */
     private $lastLink;
 
+
+    /**
+     * 
+     * Previous page link
+     *
+     * @var any
+     * 
+     */
     private $backLink;
 
+
+    /**
+     * 
+     * Current URL
+     *
+     * @var string
+     * 
+     */
     private $pageURL;
 
+
+    /**
+     * 
+     * Paginated data
+     *
+     * @var array
+     * 
+     */
     private $data;
 
+
+    /**
+     * 
+     * PDO Object
+     *
+     * @var any
+     * 
+     */
     private $pdo;
 
+
+    /**
+     * 
+     * Total data count
+     *
+     * @var int
+     * 
+     */
     private $dataCount;
 
+
+    /**
+     * 
+     * URL query params
+     *
+     * @var array
+     * 
+     */
     private $queryParams;
 
+
+    /**
+     * 
+     * formulated URL query string
+     *
+     * @var string
+     * 
+     */
     private $persistentParams;
 
-    const FIRST_PAGE = 1;
 
+    const FIRST_PAGE = 1;
     const DEFAULT_PER_PAGE = 10;
 
 
     /**
+     * 
      * Initialize Pager
      *
      * @param PDO $pdo
+     * 
      * @param string $queryString
+     * 
+     * @param array $paginationParams optional
+     * 
      */
     public function __construct($pdo, $queryString)
     {
@@ -58,17 +183,20 @@ class Pager
         $this->queryString = $queryString;
         $this->currentPage = $_GET['page'] ?? self::FIRST_PAGE ;
         $this->offset = 0;
-        $this->pageURL = $_SERVER['REQUEST_URI'] ?? null;
+        $this->pageURL = $_SERVER['REQUEST_URI'];
         $this->queryParams = parse_url($this->pageURL, PHP_URL_QUERY);
         $this->data = [];
         $this->perPage = self::DEFAULT_PER_PAGE;
         $this->persistentParams = '';
     }
 
+
     /**
+     * 
      * Initialize pager
      *
      * @return void
+     * 
      */
     public function initialize()
     {
@@ -84,6 +212,7 @@ class Pager
         return $this;
     }
 
+
     public function setPerPage($perPage)
     {
         $this->perPage = (int)$perPage;
@@ -91,19 +220,28 @@ class Pager
     }
 
 
-    public function getPerPage()
-    {
-        return $this->perPage;
-    }
-
+    /**
+     * 
+     * Setter for page URL
+     *
+     * @param string $url
+     * 
+     * @return
+     *  
+     */
     public function setPageURL($url)
     {
         $this->pageURL = $url;
         return $this;
     }
 
+
     /**
+     * 
      * Setter for page offset
+     * 
+     * @return void
+     * 
      */
     private function setOffset() 
     {
@@ -114,23 +252,42 @@ class Pager
         }
     }
 
+
     /**
+     * 
      * Setter for page URL
-     */
+     * 
+     * @return string
+     * 
+     */  
     public function getPageURL() : string
     {
         return $this->pageURL;
     }
 
+
     /**
+     * 
      * Setter for results count
+     * 
+     * @return void
+     * 
      */
     private function setDataCount()
     {
         $this->dataCount = count($this->pdo->query($this->queryString)->fetchAll(PDO::FETCH_OBJ));
     }
 
-    private function persistQueryParams() {
+
+    /**
+     * 
+     * Persist query params to be appended to the paginated links
+     *
+     * @return void
+     * 
+     */
+    private function persistQueryParams() 
+    {
         $output = [];
         parse_str($this->queryParams, $output);
         unset($output['page']);
@@ -140,20 +297,26 @@ class Pager
         } 
     }
 
-    public function getPersistentParams() {
-        return $this->persistentParams;
-    }
 
     /**
+     * 
      * Setter for total page count
+     * 
+     * @return void
+     * 
      */
     private function setTotalPageCount() 
     {
         $this->totalPageCount = ceil($this->dataCount / $this->perPage);
     }
 
+
     /**
+     * 
      * Setter for query results data
+     * 
+     * @return void
+     * 
      */
     private function setData()
     {
@@ -161,8 +324,13 @@ class Pager
         . " LIMIT {$this->perPage} OFFSET {$this->offset}")->fetchAll(PDO::FETCH_OBJ);
     }
 
+
     /**
+     * 
      * Setter for next link
+     * 
+     * @return void
+     * 
      */
     private function setNextLink() 
     {
@@ -175,8 +343,13 @@ class Pager
         }
     }
 
+
     /**
+     * 
      * Setter for back link
+     * 
+     * @return void
+     * 
      */
     private function setBackLink()
     {
@@ -188,8 +361,13 @@ class Pager
         }
     }
 
+
     /**
+     * 
      * Setter for first link
+     * 
+     * @return void
+     * 
      */
     private function setFirstLink()
     {
@@ -200,8 +378,13 @@ class Pager
         }
     }
 
+
     /**
+     * 
      * Setter for last link
+     * 
+     * @return void
+     * 
      */
     private function setLastLink()
     {
@@ -214,9 +397,11 @@ class Pager
 
 
     /**
+     * 
      * Get paginated data and meta in array object
      *
      * @return object
+     * 
      */
     public function paginate() : object 
     {
@@ -233,12 +418,15 @@ class Pager
         ];
     }
 
+
     /**
+     * 
      * Get paginated data and meta in JSON format
      *
      * @return string
+     * 
      */
-    public function paginateJSON() : string
+    public function paginateJson() : string
     {
         return json_encode($this->paginate());
     }
