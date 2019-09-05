@@ -27,6 +27,8 @@ $p->setPerPage(10);
 $p->paginate();
 ```
 
+Screenshot 2019-09-05 at 17.25.40
+
 for JSON
 ```php
 header('Content-Type: application/json');
