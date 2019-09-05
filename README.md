@@ -24,7 +24,29 @@ $p->setPageUrl("http://localhost/inventory");
 // Set your per page limit
 $p->setPerPage(10);
 
-$p->paginate();
+$dataRecords = $p->paginate()->data;
+
+foreach($dataRecords as $data) {
+    echo $data->id.' '.$data->first_name.' '.$data->last_name.'<br />';
+}
+
+if(isset($p->paginate()->firstLink)) {
+    echo "<a href='{$p->paginate()->firstLink}'> << </a> | ";
+}
+
+if(isset($p->paginate()->backLink)) {
+    echo "<a href='{$p->paginate()->backLink}'> < </a>";
+}
+
+echo "[{$p->paginate()->currentPage}]";
+
+if(isset($p->paginate()->nextLink)) {
+    echo "<a href='{$p->paginate()->nextLink}'> > </a> | ";
+}
+
+if(isset($p->paginate()->lastLink)) {
+    echo "<a href='{$p->paginate()->lastLink}'> >> </a>";
+}
 ```
 
 Screenshot 2019-09-05 at 17.25.40
