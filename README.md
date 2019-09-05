@@ -13,13 +13,13 @@ making it easier to navigate a list of records with simple navigation links.
 use Pagination\Pager;
 
 // Create your PDO connection object
-$pdo = new \PDO("mysql:host=localhost;port=3306;dbname=labstore", 'root', '');
+$pdo = new \PDO("mysql:host=localhost;port=3306;dbname=testdb", 'root', 'r00t');
 
 // Initiate your pager
-$p = new Pager($pdo, "SELECT * FROM inventory"); 
+$p = new Pager($pdo, "SELECT * FROM users"); 
 
 // Set you page URL
-$p->setPageUrl("http://localhost/inventory");
+$p->setPageUrl("http://localhost/users");
 
 // Set your per page limit
 $p->setPerPage(10);
@@ -48,8 +48,6 @@ if(isset($p->paginate()->lastLink)) {
     echo "<a href='{$p->paginate()->lastLink}'> >> </a>";
 }
 ```
-
-Screenshot 2019-09-05 at 17.25.40
 
 for JSON
 ```php
