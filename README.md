@@ -7,7 +7,7 @@ making it easier to navigate a list of records with simple navigation links.
 ```composer require allan/pagination```
 
 ### Usage
-```
+```php
 <?php
 
 use Pagination\Pager;
@@ -28,7 +28,7 @@ $p->paginate();
 ```
 
 for JSON
-```
+```php
 header('Content-Type: application/json');
 echo $p->paginateJSON();
 ```
