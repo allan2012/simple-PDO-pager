@@ -29,5 +29,6 @@ $p->paginate();
 
 for JSON
 ```
-$p->paginateJSON();
+header('Content-Type: application/json');
+echo $p->paginateJSON();
 ```
