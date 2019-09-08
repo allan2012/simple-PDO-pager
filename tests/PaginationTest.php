@@ -76,14 +76,6 @@ Class PaginationTest extends TestCase
         $meta = self::$p->paginate();
         $this->assertEquals(null, $meta->lastLink);
     }
-//
-//    public function testBackLinkValue() {}
-//
-//    public function testNextLinkValue() {}
-//
-//    public function testTotalRecordsCount() {}
-//
-//    public function testMySQLQueryConcatinationWithOffsetAndLimit() {}
 
     // Clean up the test case, called for every defined test
     public function tearDown()
@@ -91,9 +83,5 @@ Class PaginationTest extends TestCase
         self::$pdoConnection = null;
     }
 
-    // Clean up the whole test class
-    public static function tearDownAfterClass()
-    {
-    }
 
 }
